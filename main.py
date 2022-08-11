@@ -1,6 +1,5 @@
 import SimpleITK as sitk
 import utils
-import numpy as np
 import matplotlib.pyplot as plt
 
 prostate_img = sitk.ReadImage("C:/Users/thish/Documents/804/mini-project/case23_resampled.nii")
@@ -13,16 +12,21 @@ writer.Execute(segment)
 
 img_overlay = sitk.LabelOverlay(prostate_img, segment)
 
-'''plt.imshow(sitk.GetArrayFromImage(img_overlay[:,:,35]), cmap='gray')
-plt.show()'''
+plt.imshow(sitk.GetArrayFromImage(img_overlay[:,:,35]), cmap='gray')
+plt.show()
 
-#prostate_dsc = utils.seg_eval_dice(prostate_seg, segment)
-#print("The DSC is:", prostate_dsc)
+prostate_dsc = utils.seg_eval_dice(prostate_seg, segment)
+print("The DSC is:", prostate_dsc)
 
-#depth, centroid = utils.get_target_loc(prostate_seg)
+centroid = utils.get_target_loc(prostate_seg)
 
-'''plt.imshow(sitk.GetArrayFromImage(prostate_img[:,:,depth]), cmap='gray')
-#Add red x to centroid
-plt.show()'''
+plt.figure()
+plt.imshow(sitk.GetArrayFromImage(prostate_img[:,:,centroid[2]]), cmap='gray')
+plt.plot([centroid[0]],[centroid[1]],'rx')
+plt.show()
 
-utils.pixel_extract(prostate_img, (10,-50,10), 6)
+cube_intensities = utils.pixel_extract(prostate_img, centroid, 6)
+
+plt.boxplot(cube_intensities)
+plt.show()
+

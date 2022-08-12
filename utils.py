@@ -1,7 +1,17 @@
 import SimpleITK as sitk
 import numpy as np
 
+"""
+BMIF 804 Mini Project
+Thishanya Gunasekera (20367785)
 
+GitHub: https://github.com/ThishanyaG/BMIF804_mini-project
+
+This code provides functions that will, first, create a segmentation mask of an inputted image, then calculate the 
+dice similarity coefficient between an inputted segmentation mask and an inputted gold standard segmentation mask. The 
+next function will determine the centroid of an inputted image, and finally the last function will extract the pixel 
+intensities of a given image from around an inputted point given an inputted radius. 
+"""
 def prostate_segmenter(mri, upper_lim, lower_lim):
     thresh_filter = sitk.BinaryThresholdImageFilter()
     thresh_filter.SetLowerThreshold(lower_lim)
@@ -29,6 +39,7 @@ def get_target_loc(segment_mask):
     array = sitk.GetArrayFromImage(segment_mask[:, :, depth])
     loc = np.where(array != 0)
     centroid = (np.mean(loc[0]), np.mean(loc[1]), depth)
+    print("The Centroid of the prostate is:", centroid)
     return centroid
 
 

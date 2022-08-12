@@ -1,6 +1,5 @@
 import SimpleITK as sitk
 import numpy as np
-import matplotlib.pyplot as plt
 
 
 def prostate_segmenter(mri, upper_lim, lower_lim):
@@ -27,11 +26,8 @@ def get_target_loc(segment_mask):
         if np.count_nonzero(segment_mask[:, :, i]) > pixel:
             pixel = np.count_nonzero(segment_mask[:, :, i])
             depth = i
-    print("The LP plane with the largest prostate cross section is at depth", depth)
-
-    array = sitk.GetArrayFromImage(segment_mask[:,:,depth])
+    array = sitk.GetArrayFromImage(segment_mask[:, :, depth])
     loc = np.where(array != 0)
-    print(np.mean(loc[0]), np.mean(loc[1]))
     centroid = (np.mean(loc[0]), np.mean(loc[1]), depth)
     return centroid
 
